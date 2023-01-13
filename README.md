@@ -5,7 +5,7 @@
 > initiate go module
 
 ```bash
-go mod init show
+go mod init github.com/eduardkh/show
 ```
 
 > get the cobra module and the cobra CLI tool
