@@ -45,6 +45,14 @@ go mod tidy
 build.bat
 ```
 
+> add external command
+
+```bash
+cobra-cli add external -p ipCmd
+go mod tidy
+build.bat
+```
+
 > add brief command
 
 ```bash
