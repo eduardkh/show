@@ -42,7 +42,7 @@ var externalCmd = &cobra.Command{
 			fmt.Println(err)
 			return
 		}
-		fmt.Println(string(body))
+		fmt.Println("Your external IP is:", string(body))
 	},
 }
 
