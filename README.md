@@ -59,3 +59,10 @@ build.bat
 cobra-cli add brief -p interfaceCmd
 build.bat
 ```
+
+> add timestamp
+
+```bash
+cobra-cli add timestamp
+build.bat
+```
