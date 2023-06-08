@@ -66,3 +66,17 @@ build.bat
 cobra-cli add timestamp
 build.bat
 ```
+
+## show command
+
+> install the tool from github.com
+
+```bash
+go install github.com/eduardkh/show@latest
+```
+
+> install autocompletion
+
+```bash
+show completion powershell | Out-String | Invoke-Expression
+```
