@@ -95,12 +95,15 @@ example:
 show ip calc 192.168.1.1/25
 show ip calc "192.168.1.1 255.255.255.224"`,
 	Run: func(cmd *cobra.Command, args []string) {
-		ipAddresses := args[0]
-		// fmt.Println(ipAddresses)
-		//
-		// code goes here
-		calculateIPDetails(ipAddresses)
-		//
+		// Check if arguments are provided
+		if len(args) == 0 {
+			fmt.Println(`example:
+show ip calc 192.168.1.1/25
+show ip calc "192.168.1.1 255.255.255.224"`)
+			return
+		}
+		ipAddress := args[0]
+		calculateIPDetails(ipAddress)
 	},
 }
 
