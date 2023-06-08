@@ -87,7 +87,7 @@ show completion powershell | Out-String | Invoke-Expression
 show ip external
 # Your external IP is: [public ip]
 
-# show ip interface brief
+show ip interface brief
 # IP Address      Subnet Mask     MAC Address             IP Enabled      Interface Description
 # 192.168.7.50    255.255.255.0   04:7C:16:00:00:00       true            Intel(R) Ethernet Controller (3) I225-V
 
