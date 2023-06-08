@@ -1,40 +1,43 @@
-/*
-Copyright © 2023 NAME HERE <EMAIL ADDRESS>
-
-*/
 package cmd
 
 import (
 	"fmt"
+	"log"
 
+	"github.com/bi-zone/wmi"
 	"github.com/spf13/cobra"
 )
+
+type interface_win32_NetworkAdapterConfiguration struct {
+	IPAddress   []string
+	IPSubnet    []string
+	IPEnabled   bool
+	MACAddress  string
+	Description string
+}
 
 // interfaceCmd represents the interface command
 var interfaceCmd = &cobra.Command{
 	Use:   "interface",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "get interface related information",
+	Long:  `get interface related information`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("interface called")
+		// fmt.Println("interface called")
+		var dst []interface_win32_NetworkAdapterConfiguration
+
+		q := wmi.CreateQueryFrom(&dst, "Win32_NetworkAdapterConfiguration", "")
+		if err := wmi.Query(q, &dst); err != nil {
+			log.Fatal(err)
+		}
+		fmt.Println("IP Address\tSubnet Mask\tMAC Address\t\tIP Enabled\tInterface Description")
+		for _, v := range dst {
+			if v.IPEnabled {
+				fmt.Printf("%v\t%v\t%v\t%v\t\t%v\n", v.IPAddress[0], v.IPSubnet[0], v.MACAddress, v.IPEnabled, v.Description)
+			}
+		}
 	},
 }
 
 func init() {
 	ipCmd.AddCommand(interfaceCmd)
-
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// interfaceCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// interfaceCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
