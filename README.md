@@ -4,26 +4,26 @@
 
 > initiate go module
 
-```bash
+```powershell
 go mod init github.com/eduardkh/show
 ```
 
 > get the cobra module and the cobra CLI tool
 
-```bash
+```powershell
 go get -u github.com/spf13/cobra@latest
 go install github.com/spf13/cobra-cli@latest
 ```
 
 > initiate cobra project (must be the same as the go module show)
 
-```bash
+```powershell
 cobra-cli init
 ```
 
 > test the app
 
-```bash
+```powershell
 go run main.go
 go buld .
 ```
@@ -32,14 +32,14 @@ go buld .
 
 > add commands
 
-```bash
+```powershell
 cobra-cli add ip
 cobra-cli add interface -p ipCmd
 ```
 
 > add gateway command
 
-```bash
+```powershell
 cobra-cli add gateway -p ipCmd
 go mod tidy
 build.bat
@@ -47,7 +47,7 @@ build.bat
 
 > add external command
 
-```bash
+```powershell
 cobra-cli add external -p ipCmd
 go mod tidy
 build.bat
@@ -55,14 +55,14 @@ build.bat
 
 > add brief command
 
-```bash
+```powershell
 cobra-cli add brief -p interfaceCmd
 build.bat
 ```
 
 > add timestamp
 
-```bash
+```powershell
 cobra-cli add timestamp
 build.bat
 ```
@@ -71,19 +71,35 @@ build.bat
 
 > install the tool from github.com
 
-```bash
+```powershell
 go install github.com/eduardkh/show@latest
 ```
 
 > install autocompletion
 
-```bash
+```powershell
 show completion powershell | Out-String | Invoke-Expression
+```
+
+> make autocompletion permanent in PS
+
+```powershell
+# in $PROFILE file
+Test-Path $PROFILE
+New-Item -path $PROFILE -type file -force
+echo "show completion powershell | Out-String | Invoke-Expression" >> $PROFILE
+
+Get-ExecutionPolicy
+Set-ExecutionPolicy RemoteSigned # as admin
+
+# revert $PROFILE file and policy
+Remove-Item $PROFILE
+Set-ExecutionPolicy Restricted # as admin
 ```
 
 > basic usage
 
-```bash
+```powershell
 show ip external
 # Your external IP is: [public ip]
 
