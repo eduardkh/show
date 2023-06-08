@@ -29,12 +29,18 @@ var interfaceCmd = &cobra.Command{
 		if err := wmi.Query(q, &dst); err != nil {
 			log.Fatal(err)
 		}
-		fmt.Println("IP Address\tSubnet Mask\tMAC Address\t\tIP Enabled\tInterface Description")
 		for _, v := range dst {
 			if v.IPEnabled {
-				fmt.Printf("%v\t%v\t%v\t%v\t\t%v\n", v.IPAddress[0], v.IPSubnet[0], v.MACAddress, v.IPEnabled, v.Description)
+				fmt.Print("\n")
+				fmt.Printf("Name       : %v\n", v.Description)
+				fmt.Printf("IP Address : %v\n", v.IPAddress[0])
+				fmt.Printf("Subnet Mask: %v\n", v.IPSubnet[0])
+				fmt.Printf("MAC Address: %v\n", v.MACAddress)
+				fmt.Printf("Active     : %v\n", v.IPEnabled)
+				fmt.Print("\n")
 			}
 		}
+		// }
 	},
 }
 
