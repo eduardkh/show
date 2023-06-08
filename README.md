@@ -1,4 +1,4 @@
-# show
+# show command build
 
 `boilerplate`
 
@@ -67,7 +67,7 @@ cobra-cli add timestamp
 build.bat
 ```
 
-## show command
+## show command usage
 
 > install the tool from github.com
 
