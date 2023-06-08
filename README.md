@@ -53,6 +53,14 @@ go mod tidy
 build.bat
 ```
 
+> add calc command
+
+```powershell
+cobra-cli add calc -p ipCmd
+go mod tidy
+build.bat
+```
+
 > add brief command
 
 ```powershell
