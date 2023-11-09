@@ -35,20 +35,20 @@ func calculateIPDetails(input string) {
 			return
 		}
 		ipnet = &net.IPNet{
-			IP:   ip,
+			IP:   ip.Mask(mask), // Ensure the IP is the network address
 			Mask: mask,
 		}
 	}
 
-	// Calculate other details
-	network := ipnet.IP.Mask(ipnet.Mask)
-	broadcast := make(net.IP, len(network))
+	// Calculate network details
+	ones, bits := ipnet.Mask.Size()
+	network := ipnet.IP // Correct network address
+	broadcast := net.IP(make([]byte, len(ipnet.IP)))
 	for i := range network {
 		broadcast[i] = network[i] | ^ipnet.Mask[i]
 	}
 
-	ones, bits := ipnet.Mask.Size()
-
+	// Determine the range of host addresses
 	var hostmin net.IP
 	var hostmax net.IP
 	var hosts int
@@ -66,15 +66,22 @@ func calculateIPDetails(input string) {
 		hosts = 1
 		message = "Special    : Single Host Address"
 	} else {
-		hostmin = append(network[:len(network)-1], network[len(network)-1]+1)
-		hostmax = append(broadcast[:len(broadcast)-1], broadcast[len(broadcast)-1]-1)
-		hosts = (1 << (bits - ones)) - 2
+		// Calculate the hostmin and hostmax by manipulating the network and broadcast addresses.
+		hostmin = make(net.IP, len(network))
+		copy(hostmin, network)
+		hostmin[len(hostmin)-1]++ // Increment the last byte for hostmin
+
+		hostmax = make(net.IP, len(broadcast))
+		copy(hostmax, broadcast)
+		hostmax[len(hostmax)-1]-- // Decrement the last byte for hostmax
+
+		hosts = (1 << (bits - ones)) - 2 // Calculate the number of usable hosts
 	}
 
 	// Print details
 	fmt.Println("Address    :", ip.String()+"/"+fmt.Sprint(ones))
 	fmt.Println("SubnetMask :", net.IP(ipnet.Mask).String())
-	if ones < 30 {
+	if ones <= 30 { // Print network and broadcast for subnets /30 and larger
 		fmt.Println("Network    :", network.String())
 		fmt.Println("Broadcast  :", broadcast.String())
 	}
