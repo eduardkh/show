@@ -2,7 +2,7 @@ package cmd
 
 import (
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 
 	"github.com/spf13/cobra"
@@ -34,15 +34,27 @@ var externalCmd = &cobra.Command{
 		}
 		defer res.Body.Close()
 
-		body, err := ioutil.ReadAll(res.Body)
+		body, err := io.ReadAll(res.Body)
 		if err != nil {
 			fmt.Println(err)
 			return
 		}
-		fmt.Println("Your external IP is:", string(body))
+
+		raw, err := cmd.Flags().GetBool("raw")
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+
+		if raw {
+			fmt.Println(string(body))
+		} else {
+			fmt.Println("Your external IP is:", string(body))
+		}
 	},
 }
 
 func init() {
 	ipCmd.AddCommand(externalCmd)
+	externalCmd.Flags().BoolP("raw", "r", false, "get IP address only")
 }
