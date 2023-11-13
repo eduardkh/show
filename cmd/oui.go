@@ -171,6 +171,7 @@ var ouiCmd = &cobra.Command{
 			err := PrintOUIInfo(macAddress)
 			if err != nil {
 				fmt.Println("Error:", err)
+				fmt.Println("try 'show ip oui --update' first")
 				return
 			}
 		}
