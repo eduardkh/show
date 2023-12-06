@@ -92,5 +92,5 @@ including the method, headers, body, URI, requesting host, and timestamp.`,
 }
 
 func init() {
-	ipCmd.AddCommand(webhookCmd)
+	rootCmd.AddCommand(webhookCmd)
 }
