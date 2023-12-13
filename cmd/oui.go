@@ -133,15 +133,14 @@ func PrintOUIInfo(macAddress string) error {
 var ouiCmd = &cobra.Command{
 	Use:   "oui",
 	Short: "Display vendor information for a given MAC address based on its OUI.",
-	Long: `This command retrieves and displays the manufacturer's details associated with the Organizationally Unique Identifier (OUI) segment of a provided MAC address.
-	It accepts various MAC address formats, normalizing them for processing.
-	This tool can be particularly useful for network diagnostics and hardware identification purposes.
-	
-	Usage:
-	show ip oui 005056C00001
-	show ip oui 00:50:56:C0:00:01
-	show ip oui 00-50-56-C0-00-01
-	show ip oui '0050.56C0.0001'
+	Long: `
+Display vendor information for a given MAC address based on its OUI.
+
+Usage:
+show ip oui 005056C00001
+show ip oui 00:50:56:C0:00:01
+show ip oui 00-50-56-C0-00-01
+show ip oui '0050.56C0.0001'
 	`,
 	Run: func(cmd *cobra.Command, args []string) {
 		update, _ := cmd.Flags().GetBool("update")
