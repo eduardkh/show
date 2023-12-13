@@ -155,16 +155,14 @@ var ouiCmd = &cobra.Command{
 		} else {
 			// Check if a MAC address argument is provided
 			if len(args) == 0 {
-				commands := []string{
-					"Usage:",
-					"show ip oui 005056C00001",
-					"show ip oui 00:50:56:C0:00:01",
-					"show ip oui 00-50-56-C0-00-01",
-					"show ip oui '0050.56C0.0001'",
-				}
-				for _, command := range commands {
-					fmt.Println(command)
-				}
+				cmd.Usage()
+				fmt.Println(`
+Usage:
+show ip oui 005056C00001
+show ip oui 00:50:56:C0:00:01
+show ip oui 00-50-56-C0-00-01
+show ip oui '0050.56C0.0001'
+				`)
 				return
 			}
 			macAddress := args[0] // assuming the MAC address is the first argument
