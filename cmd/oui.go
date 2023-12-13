@@ -24,7 +24,7 @@ func DownloadOUIFile() error {
 	}
 
 	// Create a subdirectory for your app.
-	appDataDir = filepath.Join(appDataDir, "MyOUIApp")
+	appDataDir = filepath.Join(appDataDir, "show")
 	if err := os.MkdirAll(appDataDir, 0755); err != nil {
 		return fmt.Errorf("error creating application data directory: %w", err)
 	}
@@ -85,7 +85,7 @@ func PrintOUIInfo(macAddress string) error {
 	}
 
 	// Construct the path to the oui.csv file
-	csvFilePath := filepath.Join(appDataDir, "MyOUIApp", "oui.csv")
+	csvFilePath := filepath.Join(appDataDir, "show", "oui.csv")
 
 	// Open the CSV file
 	file, err := os.Open(csvFilePath)

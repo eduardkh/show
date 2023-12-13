@@ -1,8 +1,6 @@
 package cmd
 
 import (
-	"fmt"
-
 	"github.com/spf13/cobra"
 )
 
@@ -12,15 +10,7 @@ var ipCmd = &cobra.Command{
 	Short: "List all IP commands",
 	Long:  `List all IP commands`,
 	Run: func(cmd *cobra.Command, args []string) {
-		commands := []string{
-			"Usage:",
-			"show ip external",
-			"show ip interface",
-			"show ip interface brief",
-		}
-		for _, command := range commands {
-			fmt.Println(command)
-		}
+		cmd.Usage()
 	},
 }
 
