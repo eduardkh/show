@@ -37,20 +37,11 @@ cobra-cli add ip
 cobra-cli add interface -p ipCmd
 ```
 
-> add gateway command
-
-```powershell
-cobra-cli add gateway -p ipCmd
-go mod tidy
-build.bat
-```
-
 > add external command
 
 ```powershell
 cobra-cli add external -p ipCmd
 go mod tidy
-build.bat
 ```
 
 > add calc command
@@ -58,21 +49,18 @@ build.bat
 ```powershell
 cobra-cli add calc -p ipCmd
 go mod tidy
-build.bat
 ```
 
 > add brief command
 
 ```powershell
 cobra-cli add brief -p interfaceCmd
-build.bat
 ```
 
 > add timestamp
 
 ```powershell
 cobra-cli add timestamp
-build.bat
 ```
 
 ## show command usage
