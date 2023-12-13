@@ -98,9 +98,9 @@ func printAbuseIPDBResponse(response *AbuseIPDBResponse) {
 		fmt.Println("")
 		fmt.Println("Reports:")
 		for _, report := range response.Data.Reports {
-			fmt.Println("# Reported At     : ", report.ReportedAt)
-			fmt.Println("# Reporter Country: ", report.ReporterCountryName)
-			fmt.Println("# Comment         : ", report.Comment)
+			fmt.Println("\n🕙 Reported At     : ", report.ReportedAt)
+			fmt.Println("🌍 Reporter Country: ", report.ReporterCountryName)
+			fmt.Println("📝 Comment         : ", report.Comment)
 		}
 	} else {
 		fmt.Println("No reports available.")
