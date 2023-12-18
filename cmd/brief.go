@@ -19,8 +19,8 @@ type brief_win32_NetworkAdapterConfiguration struct {
 // briefCmd represents the brief command
 var briefCmd = &cobra.Command{
 	Use:   "brief",
-	Short: "get a brief interface related information",
-	Long:  `get a brief interface related information`,
+	Short: "Get a brief interface related information",
+	Long:  `Get a brief interface related information`,
 	Run: func(cmd *cobra.Command, args []string) {
 		// fmt.Println("brief called")
 		var dst []brief_win32_NetworkAdapterConfiguration

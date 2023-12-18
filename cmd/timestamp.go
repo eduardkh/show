@@ -10,8 +10,8 @@ import (
 // timestampCmd represents the timestamp command
 var timestampCmd = &cobra.Command{
 	Use:   "timestamp",
-	Short: "get a timestamp",
-	Long:  `get a timestamp`,
+	Short: "Get a timestamp",
+	Long:  `Get a timestamp`,
 	Run: func(cmd *cobra.Command, args []string) {
 		now := time.Now()
 		flg, _ := cmd.Flags().GetBool("epoch")

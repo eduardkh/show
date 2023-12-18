@@ -19,8 +19,8 @@ type interface_win32_NetworkAdapterConfiguration struct {
 // interfaceCmd represents the interface command
 var interfaceCmd = &cobra.Command{
 	Use:   "interface",
-	Short: "get interface related information",
-	Long:  `get interface related information`,
+	Short: "Get interface related information",
+	Long:  `Get interface related information`,
 	Run: func(cmd *cobra.Command, args []string) {
 		// fmt.Println("interface called")
 		var dst []interface_win32_NetworkAdapterConfiguration
