@@ -53,6 +53,14 @@ func getAPIKey() (string, error) {
 	return viper.GetString("api_key"), nil
 }
 
+func updateAPIKey(newKey string) error {
+	if err := initConfig(); err != nil {
+		return err
+	}
+	viper.Set("api_key", newKey)
+	return viper.WriteConfig() // Writes the current configuration to the predefined path
+}
+
 func queryAbuseIPDB(ipAddress, apiKey string) (*AbuseIPDBResponse, error) {
 	url := fmt.Sprintf("https://api.abuseipdb.com/api/v2/check?maxAgeInDays=90&verbose&ipAddress=%s", ipAddress)
 	req, _ := http.NewRequest("GET", url, nil)
@@ -116,6 +124,16 @@ var abuseipdbCmd = &cobra.Command{
 Example usage:
 show ip abuseipdb 8.8.8.8`,
 	Run: func(cmd *cobra.Command, args []string) {
+		// Check if the update-key flag is set
+		updateKey, _ := cmd.Flags().GetString("update-key")
+		if updateKey != "" {
+			if err := updateAPIKey(updateKey); err != nil {
+				fmt.Println("Error updating API key:", err)
+				return
+			}
+			fmt.Println("API key updated successfully.")
+			return
+		}
 		// Check if arguments are provided
 		if len(args) == 0 {
 			cmd.Usage()
@@ -144,5 +162,6 @@ show ip abuseipdb 8.8.8.8`,
 }
 
 func init() {
+	abuseipdbCmd.Flags().StringP("update-key", "u", "", "Update the API key in the configuration file")
 	ipCmd.AddCommand(abuseipdbCmd)
 }
