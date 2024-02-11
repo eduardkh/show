@@ -40,50 +40,60 @@ type AbuseIPDBResponse struct {
 	} `json:"data"`
 }
 
-func initConfig() error {
-	viper.AddConfigPath("$APPDATA/show") // Use $APPDATA environment variable
-	viper.SetConfigName("config")        // Configuration file name (without extension)
-	viper.SetConfigType("yaml")          // Configuration file type
+var (
+	configPath = filepath.Join(os.Getenv("APPDATA"), "show", "config.yaml")
+)
 
-	return viper.ReadInConfig() // Find and read the config file
+func ensureConfigFile() error {
+	// Ensure the config directory exists
+	if err := os.MkdirAll(filepath.Dir(configPath), os.ModePerm); err != nil {
+		return fmt.Errorf("failed to create config directory: %w", err)
+	}
+
+	// Initialize viper with the config file
+	viper.SetConfigFile(configPath)
+	viper.SetConfigType("yaml")
+
+	// Check if the config file exists
+	if _, err := os.Stat(configPath); os.IsNotExist(err) {
+		// The config file does not exist, attempt to create it
+		file, err := os.Create(configPath)
+		if err != nil {
+			return fmt.Errorf("failed to directly create config file: %w", err)
+		}
+		file.Close() // Close the file after creating it
+
+		// Set a default value for "api_key" and attempt to write to the file
+		viper.Set("api_key", "")
+		if err := viper.WriteConfig(); err != nil {
+			return fmt.Errorf("failed to write default config: %w", err)
+		}
+	} else if err != nil {
+		// An error occurred trying to check the file, unrelated to file not existing
+		return fmt.Errorf("error checking config file: %w", err)
+	} else {
+		// The config file exists, try reading it
+		if err := viper.ReadInConfig(); err != nil {
+			return fmt.Errorf("failed to read config file: %w", err)
+		}
+	}
+
+	return nil
 }
 
 func getAPIKey() (string, error) {
-	if err := initConfig(); err != nil {
+	if err := ensureConfigFile(); err != nil {
 		return "", err
 	}
 	return viper.GetString("api_key"), nil
 }
 
 func updateAPIKey(newKey string) error {
-	// Define the config directory and file path
-	configDir := os.ExpandEnv("$APPDATA/show")
-	configFile := filepath.Join(configDir, "config.yaml")
-
-	if err := initConfig(); err != nil {
-		// Check specifically for a ConfigFileNotFoundError
-		if _, ok := err.(viper.ConfigFileNotFoundError); ok {
-			// Ensure the directory exists
-			if err := os.MkdirAll(configDir, os.ModePerm); err != nil {
-				return fmt.Errorf("failed to create config directory: %w", err)
-			}
-
-			// Set the API key in viper
-			viper.Set("api_key", newKey)
-			// Attempt to create the config file now that the directory exists
-			err := viper.SafeWriteConfigAs(configFile)
-			if err != nil {
-				return fmt.Errorf("failed to create config file: %w", err)
-			}
-			return nil
-		}
-		// If the error is not because the file was not found, return it
+	if err := ensureConfigFile(); err != nil {
 		return err
 	}
-
-	// If the config file exists and was loaded successfully, set the new API key and save
 	viper.Set("api_key", newKey)
-	return viper.WriteConfig() // This now uses the existing file path
+	return viper.WriteConfig()
 }
 
 func queryAbuseIPDB(ipAddress, apiKey string) (*AbuseIPDBResponse, error) {
