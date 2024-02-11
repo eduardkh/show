@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"os"
+	"path/filepath"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -54,11 +56,34 @@ func getAPIKey() (string, error) {
 }
 
 func updateAPIKey(newKey string) error {
+	// Define the config directory and file path
+	configDir := os.ExpandEnv("$APPDATA/show")
+	configFile := filepath.Join(configDir, "config.yaml")
+
 	if err := initConfig(); err != nil {
+		// Check specifically for a ConfigFileNotFoundError
+		if _, ok := err.(viper.ConfigFileNotFoundError); ok {
+			// Ensure the directory exists
+			if err := os.MkdirAll(configDir, os.ModePerm); err != nil {
+				return fmt.Errorf("failed to create config directory: %w", err)
+			}
+
+			// Set the API key in viper
+			viper.Set("api_key", newKey)
+			// Attempt to create the config file now that the directory exists
+			err := viper.SafeWriteConfigAs(configFile)
+			if err != nil {
+				return fmt.Errorf("failed to create config file: %w", err)
+			}
+			return nil
+		}
+		// If the error is not because the file was not found, return it
 		return err
 	}
+
+	// If the config file exists and was loaded successfully, set the new API key and save
 	viper.Set("api_key", newKey)
-	return viper.WriteConfig() // Writes the current configuration to the predefined path
+	return viper.WriteConfig() // This now uses the existing file path
 }
 
 func queryAbuseIPDB(ipAddress, apiKey string) (*AbuseIPDBResponse, error) {
