@@ -3,6 +3,7 @@ package cmd
 import (
 	"fmt"
 	"net"
+	"os"
 	"strings"
 
 	"github.com/spf13/cobra"
@@ -105,12 +106,14 @@ show ip calc "192.168.1.1 255.255.255.224"`,
 	Run: func(cmd *cobra.Command, args []string) {
 		// Check if arguments are provided
 		if len(args) == 0 {
-			cmd.Usage()
+			if err := cmd.Usage(); err != nil {
+				// Handle the error, e.g., log it or print it
+				fmt.Fprintf(os.Stderr, "Error displaying usage: %v\n", err)
+			}
 			fmt.Println(`
 Usage:
 show ip calc 192.168.1.1/25
-show ip calc "192.168.1.1 255.255.255.224
-			`)
+show ip calc "192.168.1.1 255.255.255.224"`)
 			return
 		}
 		ipAddress := args[0]
