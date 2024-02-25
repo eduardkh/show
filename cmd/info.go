@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"os"
 
 	"github.com/spf13/cobra"
 )
@@ -62,7 +63,10 @@ var infoCmd = &cobra.Command{
 	Long:  `Get detailed information about an IP address using IPinfo.io.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		if len(args) == 0 {
-			cmd.Usage()
+			if err := cmd.Usage(); err != nil {
+				// Handle the error, e.g., log it or output to stderr
+				fmt.Fprintf(os.Stderr, "Error displaying usage: %v\n", err)
+			}
 			return
 		}
 		ip := args[0]

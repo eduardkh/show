@@ -171,7 +171,10 @@ show ip abuseipdb 8.8.8.8`,
 		}
 		// Check if arguments are provided
 		if len(args) == 0 {
-			cmd.Usage()
+			if err := cmd.Usage(); err != nil {
+				// Handle the error, e.g., log it or output to stderr
+				fmt.Fprintf(os.Stderr, "Error displaying usage: %v\n", err)
+			}
 			fmt.Println("\nUsage:")
 			fmt.Println("show ip abuseipdb 8.8.8.8")
 			return

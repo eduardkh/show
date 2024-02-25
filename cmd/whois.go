@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"net"
+	"os"
 	"strings"
 
 	"github.com/spf13/cobra"
@@ -78,7 +79,10 @@ Example: ip whois 8.8.8.8`,
 	Run: func(cmd *cobra.Command, args []string) {
 		// Check if no arguments were provided
 		if len(args) == 0 {
-			cmd.Usage() // Print the usage information
+			if err := cmd.Usage(); err != nil {
+				// Handle the error, e.g., log it or output to stderr
+				fmt.Fprintf(os.Stderr, "Error displaying usage: %v\n", err)
+			}
 			return
 		}
 

@@ -1,6 +1,9 @@
 package cmd
 
 import (
+	"fmt"
+	"os"
+
 	"github.com/spf13/cobra"
 )
 
@@ -10,7 +13,10 @@ var ipCmd = &cobra.Command{
 	Short: "List all IP commands",
 	Long:  `List all IP commands`,
 	Run: func(cmd *cobra.Command, args []string) {
-		cmd.Usage()
+		if err := cmd.Usage(); err != nil {
+			// Handle the error, e.g., log it or output to stderr
+			fmt.Fprintf(os.Stderr, "Error displaying usage: %v\n", err)
+		}
 	},
 }
 

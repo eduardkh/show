@@ -154,7 +154,10 @@ show ip oui '0050.56C0.0001'
 		} else {
 			// Check if a MAC address argument is provided
 			if len(args) == 0 {
-				cmd.Usage()
+				if err := cmd.Usage(); err != nil {
+					// Handle the error, e.g., log it or output to stderr
+					fmt.Fprintf(os.Stderr, "Error displaying usage: %v\n", err)
+				}
 				fmt.Println(`
 Usage:
 show ip oui 005056C00001
