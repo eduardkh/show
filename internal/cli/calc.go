@@ -113,17 +113,17 @@ func calculateIPDetails(input string) {
 
 // calcCmd represents the calc command
 var calcCmd = &cobra.Command{
-	Use:   "calc",
+	Use:   "calc <ip[/prefix]> [subnet-mask]",
 	Short: "IP Calculator",
 	Long: `IP Calculator
 example:
 show ip calc 192.168.1.1
 show ip calc 192.168.1.1/25
-show ip calc "192.168.1.1 255.255.255.224"`,
+show ip calc 192.168.1.1 255.255.255.224`,
 
 	Run: func(cmd *cobra.Command, args []string) {
 		// Check if arguments are provided
-		if len(args) == 0 {
+		if len(args) == 0 || len(args) > 2 {
 			if err := cmd.Usage(); err != nil {
 				// Handle the error, e.g., log it or print it
 				fmt.Fprintf(os.Stderr, "Error displaying usage: %v\n", err)
@@ -132,10 +132,10 @@ show ip calc "192.168.1.1 255.255.255.224"`,
 Usage:
 show ip calc 192.168.1.1
 show ip calc 192.168.1.1/25
-show ip calc "192.168.1.1 255.255.255.224"`)
+show ip calc 192.168.1.1 255.255.255.224`)
 			return
 		}
-		ipAddress := args[0]
+		ipAddress := strings.Join(args, " ")
 		calculateIPDetails(ipAddress)
 	},
 }
