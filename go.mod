@@ -1,6 +1,8 @@
 module github.com/eduardkh/show
 
-go 1.19
+go 1.26
+
+toolchain go1.26.0
 
 require (
 	github.com/bi-zone/wmi v1.1.4

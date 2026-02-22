@@ -1,2 +1,1 @@
-go build .
-move show.exe %GOPATH%\bin
+go build -o show.exe ./cmd/show

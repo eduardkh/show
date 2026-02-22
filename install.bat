@@ -1,2 +1,2 @@
-go install github.com/eduardkh/show@latest
+go install ./cmd/show
 show completion powershell | Out-String | Invoke-Expression

@@ -1,106 +1,72 @@
-# show command build
+# show
 
-`boilerplate`
+`show` is a Windows-focused network troubleshooting CLI built with Cobra.
 
-> initiate go module
+## Requirements
 
-```powershell
-go mod init github.com/eduardkh/show
-```
+- Go 1.26.0+
+- Windows (commands rely on WMI and Windows DNS cache classes)
 
-> get the cobra module and the cobra CLI tool
-
-```powershell
-go get -u github.com/spf13/cobra@latest
-go install github.com/spf13/cobra-cli@latest
-```
-
-> initiate cobra project (must be the same as the go module show)
+## Build
 
 ```powershell
-cobra-cli init
+go build -o show.exe ./cmd/show
 ```
 
-> test the app
+## Install (local repo)
 
 ```powershell
-go run main.go
-go buld .
+go install ./cmd/show
 ```
 
-`functionality`
-
-> add commands
-
-```powershell
-cobra-cli add ip
-cobra-cli add interface -p ipCmd
-```
-
-> add external command
-
-```powershell
-cobra-cli add external -p ipCmd
-go mod tidy
-```
-
-> add calc command
-
-```powershell
-cobra-cli add calc -p ipCmd
-go mod tidy
-```
-
-> add brief command
-
-```powershell
-cobra-cli add brief -p interfaceCmd
-```
-
-> add timestamp
-
-```powershell
-cobra-cli add timestamp
-```
-
-## show command usage
-
-> install the tool from github.com
+## Install (from GitHub)
 
 ```powershell
 go install github.com/eduardkh/show@latest
 ```
 
-> install autocompletion
+## Shell Completion (PowerShell)
 
 ```powershell
 show completion powershell | Out-String | Invoke-Expression
 ```
 
-> make autocompletion permanent in PS
+To make completion permanent, add the same command to your `$PROFILE`.
 
-```powershell
-# in $PROFILE file
-Test-Path $PROFILE
-New-Item -path $PROFILE -type file -force
-echo "show completion powershell | Out-String | Invoke-Expression" >> $PROFILE
+## Project Structure
 
-Get-ExecutionPolicy
-Set-ExecutionPolicy RemoteSigned # as admin
-
-# revert $PROFILE file and policy
-Remove-Item $PROFILE
-Set-ExecutionPolicy Restricted # as admin
+```text
+cmd/show/main.go        # binary entrypoint
+internal/cli/*.go       # Cobra command tree and handlers
+build.bat               # local build helper
+install.bat             # local install + completion helper
+docs/                   # architecture and session notes
 ```
 
-> basic usage
+This layout follows standard Go CLI conventions:
+- `cmd/<binary>` for application entrypoints
+- `internal/...` for non-public implementation details
+
+## Common Usage
 
 ```powershell
 show ip external
-# Your external IP is: [public ip]
-
 show ip interface brief
-# IP Address      Subnet Mask     MAC Address             IP Enabled      Interface Description
-# 192.168.7.50    255.255.255.0   04:7C:16:00:00:00       true            Intel(R) Ethernet Controller (3) I225-V
-
+show ip calc 192.168.1.1/25
+show ip whois 8.8.8.8
+show ip info 8.8.8.8
+show ip abuseipdb 8.8.8.8
+show webhook
+show timestamp --epoch
+show dnscache
 ```
+
+## Development
+
+```powershell
+go fmt ./...
+go test ./...
+go build ./cmd/show
+```
+
+See `docs/ARCHITECTURE.md` and `docs/SESSION_NOTES_2026-02-22.md` for maintainers and future agent sessions.
