@@ -22,7 +22,7 @@ go install ./cmd/show
 ## Install (from GitHub)
 
 ```powershell
-go install github.com/eduardkh/show@latest
+go install github.com/eduardkh/show/cmd/show@latest
 ```
 
 ## Shell Completion (PowerShell)
@@ -70,3 +70,4 @@ go build ./cmd/show
 ```
 
 See `docs/ARCHITECTURE.md` and `docs/SESSION_NOTES_2026-02-22.md` for maintainers and future agent sessions.
+
