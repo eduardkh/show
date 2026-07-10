@@ -25,9 +25,12 @@ The project was migrated from a flat root `main.go` + `cmd` package to a more id
 ## Current package boundaries
 
 - `internal/cli`: command definitions + command-level helpers.
+- `internal/whois`: WHOIS transport, IANA referral discovery, registry response
+  parsing, and normalized summaries.
 
 Potential future refinement:
-- Move reusable logic (HTTP clients, WMI readers, parsers) into `internal/netinfo`, `internal/whois`, etc.
+- Move other reusable logic (HTTP clients and WMI readers) into focused
+  `internal/...` packages as those boundaries become useful.
 - Keep `internal/cli` focused on argument parsing and output formatting.
 
 ## Build and install
