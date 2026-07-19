@@ -87,3 +87,16 @@ go install .
 
 See `docs/ARCHITECTURE.md` and `docs/SESSION_NOTES_2026-02-22.md` for maintainers and future agent sessions.
 
+```powershell
+# example release workflow
+git add .
+git commit -m "Add root install path and package metadata"
+
+git tag -a v0.1.0 -m "Release v0.1.0"
+
+git push origin HEAD
+git push origin v0.1.0
+
+go install github.com/eduardkh/show@v0.1.0
+go install github.com/eduardkh/show@latest
+```
