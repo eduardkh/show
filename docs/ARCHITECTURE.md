@@ -4,15 +4,16 @@
 
 This repository is a Go CLI application using Cobra.
 
-- Binary entrypoint lives in `cmd/show/main.go`.
+- The primary binary entrypoint lives in `main.go` at the module root.
 - CLI implementation lives in `internal/cli`.
 - Internal packages are intentionally non-importable from external modules.
 
 ## Why this structure
 
-The project was migrated from a flat root `main.go` + `cmd` package to a more idiomatic layout:
+The CLI implementation uses an internal package with a thin root entrypoint:
 
-- `cmd/<binary>` is the conventional place for executable entrypoints.
+- The module-root entrypoint makes `go install github.com/eduardkh/show@latest`
+  work and gives pkg.go.dev a documented root package to display.
 - `internal/<pkg>` keeps implementation private and clearer for larger growth.
 - This improves discoverability for contributors and automation agents.
 
@@ -35,13 +36,13 @@ Potential future refinement:
 
 ## Build and install
 
-- Build: `go build -o show.exe ./cmd/show`
-- Local install: `go install ./cmd/show`
+- Build: `go build -o show.exe .`
+- Local install: `go install .`
 - Remote install: `go install github.com/eduardkh/show@latest`
 
 ## Go version policy
 
-- Module target: Go `1.23` (`go.mod`).
+- Module target: Go `1.26` (`go.mod`).
 - Keep this in sync with CI/dev tooling when upgrading.
 
 ## Agent working notes
@@ -50,5 +51,5 @@ When making structural changes in future sessions:
 
 1. Prefer preserving command behavior while moving files.
 2. Update scripts (`build.bat`, `install.bat`) together with layout changes.
-3. Run `go fmt ./...` and `go build ./cmd/show` before concluding.
+3. Run `go fmt ./...`, `go test ./...`, and `go build .` before concluding.
 4. Log migration details in a dated docs file under `docs/`.

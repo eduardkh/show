@@ -1,2 +1,2 @@
-go install ./cmd/show
+go install .
 show completion powershell | Out-String | Invoke-Expression

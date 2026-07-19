@@ -6,14 +6,15 @@ Windows network troubleshooting CLI (`show`) built in Go with Cobra.
 
 ## Fast Orientation
 
-- Entrypoint: `cmd/show/main.go`
+- Entrypoint: `main.go`
 - Command package: `internal/cli`
 - Architecture notes: `docs/ARCHITECTURE.md`
-- Last migration log: `docs/SESSION_NOTES_2026-02-22.md`
+- Last migration log: `docs/SESSION_NOTES_2026-07-19.md`
 
 ## Conventions
 
-- Keep executable entrypoints under `cmd/<binary>`.
+- Keep the executable entrypoint at the module root so the short remote install
+  path remains available.
 - Keep implementation under `internal/...` unless it must be public.
 - Avoid changing command names/flags without documenting in README + session notes.
 - Prefer small, behavior-preserving refactors.
@@ -34,7 +35,7 @@ Run before finishing:
 ```powershell
 go fmt ./...
 go test ./...
-go build ./cmd/show
+go build .
 ```
 
 If tests are absent, explicitly note that in your handoff.

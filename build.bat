@@ -1,1 +1,1 @@
-go build -o show.exe ./cmd/show
+go build -o show.exe .
